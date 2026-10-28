@@ -136,3 +136,11 @@ def test_checkin_previews_then_acts(fake):
 
 def test_low_stock_lists_only_below_minimum(fake):
     assert [(s.name, s.remaining, s.minimum) for s in tools.low_stock(api(fake))] == [("HP 151A toner", 2, 4)]
+
+
+def test_an_asset_that_is_out_reads_deployed():
+    row = dict(LAPTOP, status_label={"name": "Ready to Deploy", "status_type": "deployable", "status_meta": "deployed"},
+               assigned_to={"name": "Sara Al-Qahtani"})
+    a = tools.asset_of(row, "http://snipe.test")
+    assert (a.status, a.held_by) == ("Deployed", "Sara Al-Qahtani")
+    assert tools.asset_of(dict(LAPTOP), "http://snipe.test", held_by="Omar Haddad").held_by == "Omar Haddad"

@@ -45,11 +45,13 @@ def _date(v: dict | None) -> str | None:
     return d[:10] if d else None
 
 
-def asset_of(row: dict, base_url: str) -> Asset:
+def asset_of(row: dict, base_url: str, held_by: str | None = None) -> Asset:
     status = row.get("status_label") or {}
+    # Snipe-IT keeps the label ("Ready to Deploy") while an asset is out; its own pages then say "Deployed".
+    shown = "Deployed" if status.get("status_meta") == "deployed" else status.get("name")
     return Asset(
         tag=row["asset_tag"], model=_name(row.get("model")), category=_name(row.get("category")),
-        serial=row.get("serial") or None, status=status.get("name"), held_by=_name(row.get("assigned_to")),
+        serial=row.get("serial") or None, status=shown, held_by=_name(row.get("assigned_to")) or held_by,
         location=_name(row.get("location")) or _name(row.get("rtd_location")),
         next_audit=_date(row.get("next_audit_date")), warranty_ends=_date(row.get("warranty_expires")),
         due_back=_date(row.get("expected_checkin")), link=f"{base_url}/hardware/{row['id']}",
@@ -110,7 +112,7 @@ def whats_assigned_to(api: SnipeIT, person: str) -> Holdings:
         return Holdings(candidates=[_person(r) for r in many])
     assets = api.get(f"users/{user['id']}/assets").get("rows", [])
     accessories = api.get(f"users/{user['id']}/accessories").get("rows", [])
-    return Holdings(person=_person(user), assets=[asset_of(a, _base(api)) for a in assets],
+    return Holdings(person=_person(user), assets=[asset_of(a, _base(api), user["name"]) for a in assets],
                     accessories=[a["name"] for a in accessories])
 
 
