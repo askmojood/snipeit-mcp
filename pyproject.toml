@@ -1,5 +1,5 @@
 [project]
-name = "snipeit-mcp"
+name = "mojood-snipeit-mcp"
 version = "0.1.0"
 description = "Mojood Connect demo: an MCP server for Snipe-IT (asset tracking), with confirm-before-change writes."
 readme = "README.md"
@@ -11,8 +11,13 @@ dependencies = [
   "uvicorn>=0.54",
 ]
 
+[project.urls]
+Repository = "https://github.com/askmojood/snipeit-mcp"
+Homepage = "https://mojood.app/connect"
+
 [project.scripts]
 snipeit-mcp = "snipeit_mcp.server:main"
+mojood-snipeit-mcp = "snipeit_mcp.server:main"
 snipeit-seed = "snipeit_mcp.seed:main"
 
 [dependency-groups]
