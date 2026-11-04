@@ -2,6 +2,8 @@
 
 <!-- mcp-name: io.github.askmojood/snipeit-mcp -->
 
+[![Snipe-IT (Mojood Connect) MCP server](https://mcprush.com/badge/snipe-it-mojood-connect-mcp/card.svg)](https://mcprush.com/to/snipe-it-mojood-connect-mcp?ref=badge)
+
 Ask Claude about your assets in plain words: who has laptop LAP-0142, what needs auditing this month, what's
 running low. Check assets out and in from the same chat, with a confirmation step before anything changes.
 
